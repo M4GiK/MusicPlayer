@@ -9,8 +9,8 @@ import java.util.Iterator;
 
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -18,13 +18,10 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.Slider;
-import com.vaadin.ui.Slider.ValueOutOfBoundsException;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Runo;
@@ -37,13 +34,13 @@ import com.vaadin.ui.themes.Runo;
  */
 public class LibraryScreen implements ViewScreen {
 
-    private HorizontalSplitPanel split = null;
+    private VerticalLayout playerLayout = null;
 
     /**
      * @param split
      */
-    public LibraryScreen(HorizontalSplitPanel split) {
-        setSplit(split);
+    public LibraryScreen(VerticalLayout playerLayout) {
+        setPlayerLayout(playerLayout);
     }
 
     /**
@@ -53,24 +50,25 @@ public class LibraryScreen implements ViewScreen {
      */
     @Override
     public Layout build() {
-        AbsoluteLayout root = new AbsoluteLayout();
+        HorizontalLayout root = new HorizontalLayout();
         root.setSizeFull();
         root.setCaption("Media Library");
         root.setHeight("200%");
+        root.setWidth("100%");
 
-        HorizontalLayout size = new HorizontalLayout();
-        size.setSpacing(true);
-        size.addComponent(new Label("-"));
-        Slider slider = new Slider();
-        try {
-            slider.setValue(70.0);
-        } catch (ValueOutOfBoundsException e) {
-            // Ignore
-        }
-        slider.setWidth("200px");
-        size.addComponent(slider);
-        size.addComponent(new Label("+"));
-        root.addComponent(size, "top: 16px; right: 18px; z-index:1;");
+        // HorizontalLayout size = new HorizontalLayout();
+        // size.setSpacing(true);
+        // size.addComponent(new Label("-"));
+        // Slider slider = new Slider();
+        // try {
+        // slider.setValue(70.0);
+        // } catch (ValueOutOfBoundsException e) {
+        // // Ignore
+        // }
+        // slider.setWidth("200px");
+        // size.addComponent(slider);
+        // size.addComponent(new Label("+"));
+        // root.addComponent(size, "top: 16px; right: 18px; z-index:1;");
 
         VerticalLayout content = new VerticalLayout();
         content.setSizeFull();
@@ -79,7 +77,6 @@ public class LibraryScreen implements ViewScreen {
         final GridLayout grid = new GridLayout(4, 1);
         Panel top = new Panel("My Book Collection", grid);
         top.setSizeFull();
-        top.setWidth("75%");
         top.addStyleName(Runo.PANEL_LIGHT);
         grid.setWidth("100%");
         grid.setMargin(true);
@@ -110,14 +107,14 @@ public class LibraryScreen implements ViewScreen {
                 "comics.png", "gdtnb.png", "new-mind.png", "simplicity.png",
                 "upod.png", "designing-interactions.png", "rogue-leaders.png",
                 "tcss.png", "wfd.png", "new-type.png" };
-
+        ExternalResource resource = new ExternalResource(
+                "http://creativecommons.org/images/wired/cover12_11.jpg");
         for (String cover : covers) {
             CssLayout select = new CssLayout();
             select.addStyleName(Runo.CSSLAYOUT_SELECTABLE);
             CssLayout book = new CssLayout();
             book.addStyleName(Runo.CSSLAYOUT_SHADOW);
-            book.addComponent(new Embedded(null, new ThemeResource(
-                    "icons/16/calendar.png")));
+            book.addComponent(new Embedded(null, resource));
             select.addComponent(book);
             grid.addComponent(select);
             grid.setComponentAlignment(select, Alignment.MIDDLE_CENTER);
@@ -219,18 +216,18 @@ public class LibraryScreen implements ViewScreen {
     }
 
     /**
-     * @return the split
+     * @return the playerLayout
      */
-    public HorizontalSplitPanel getSplit() {
-        return split;
+    public VerticalLayout getPlayerLayout() {
+        return playerLayout;
     }
 
     /**
-     * @param split
-     *            the split to set
+     * @param playerLayout
+     *            the playerLayout to set
      */
-    public void setSplit(HorizontalSplitPanel split) {
-        this.split = split;
+    public void setPlayerLayout(VerticalLayout playerLayout) {
+        this.playerLayout = playerLayout;
     }
 
 }

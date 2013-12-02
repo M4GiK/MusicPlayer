@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+    <class name="com.m4gik.database.MusicPlayer" table="MusicStore">
+        <id name="id" type="java.lang.Integer">
+            <column name="Id" />
+            <generator class="identity" />
+        </id>
+        <property name="title" type="string">
+            <column name="Title" not-null="false" unique="false" />
+        </property>
+        <property name="pictureUrl" type="string">
+            <column name="PictureUrl" not-null="false" unique="false" />
+        </property>
+        <property name="trackUrl" type="string">
+            <column name="TrackUrl" not-null="false" unique="false" />
+        </property>
+        <property name="price" type="float">
+            <column name="Price" not-null="false" unique="false" />
+        </property>
+        <property name="artist" type="string">
+            <column name="Artist" not-null="false" unique="false" />
+        </property>
+        <property name="album" type="string">
+            <column name="Album" not-null="false" unique="false" />
+        </property>
+        <property name="about" type="string">
+            <column name="About" not-null="false" unique="false" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -5,11 +5,14 @@
  */
 package com.m4gik;
 
+import org.hibernate.Session;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ru.xpoft.vaadin.security.ShiroSecurityNavigator;
 
+import com.m4gik.database.MusicPlayer;
+import com.m4gik.persistence.HibernateUtil;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.ErrorHandler;
@@ -30,6 +33,12 @@ import com.vaadin.ui.VerticalLayout;
 @Scope("prototype")
 @Theme("runo")
 public class musicPlayerUI extends UI implements ErrorHandler {
+
+    /**
+     * Auto generated serial version UID.
+     */
+    private static final long serialVersionUID = -957809569849200836L;
+
     /**
      * Exception on action
      */
@@ -87,5 +96,13 @@ public class musicPlayerUI extends UI implements ErrorHandler {
 
         ShiroSecurityNavigator navigator = new ShiroSecurityNavigator(this,
                 this);
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        session.beginTransaction();
+        MusicPlayer musicplayer = new MusicPlayer();
+        musicplayer.setTitle("Jestem");
+        session.save(musicplayer);
+        session.getTransaction().commit();
     }
 }

@@ -46,8 +46,19 @@ public class MainView extends Panel implements View {
      */
     private static final long serialVersionUID = 8265140038040050015L;
 
+    /**
+     * 
+     */
     private TabSheet music = new TabSheet();
 
+    /**
+     * 
+     */
+    private VerticalLayout playerLayout = null;
+
+    /**
+     * 
+     */
     private TabSheet right = new TabSheet();
 
     /**
@@ -63,6 +74,7 @@ public class MainView extends Panel implements View {
     private void addAccordion(Panel left) {
         Accordion accordion = new Accordion();
         accordion.setSizeFull();
+        accordion.setHeight("350px");
         left.setContent(accordion);
 
         accordion.addTab(buildTree(), "Category");
@@ -90,7 +102,7 @@ public class MainView extends Panel implements View {
         split.setLocked(true);
 
         right.addTab(buildWelcomeScreen(), "Welcome");
-        right.addTab(buildMusic(split), "Music Player");
+        right.addTab(buildMusic(playerLayout), "Music Player");
         right.addTab(buildLicenseScreen(), "License");
         right.addListener(new Listener() {
 
@@ -99,13 +111,11 @@ public class MainView extends Panel implements View {
             @Override
             public void componentEvent(Event event) {
                 if (right.getSelectedTab() == music) {
-                    split.setSplitPosition(25, Sizeable.Unit.PERCENTAGE);
+                    split.setSplitPosition(20, Sizeable.Unit.PERCENTAGE);
                     split.setLocked(false);
-                    split.setHeight("350px");
                 } else {
                     split.setSplitPosition(1, Sizeable.Unit.PIXELS);
                     split.setLocked(true);
-                    split.setHeight("350px");
                 }
             }
         });
@@ -141,7 +151,6 @@ public class MainView extends Panel implements View {
         split.setLocked(true);
         root.addComponent(split);
         root.setExpandRatio(split, 1);
-        split.setHeight("350px");
 
         addPanelLeft(split);
         addPanelRight(split);
@@ -171,8 +180,8 @@ public class MainView extends Panel implements View {
      * @param split
      * @return
      */
-    private Layout buildLibraryScreen(HorizontalSplitPanel split) {
-        return new LibraryScreen(split).build();
+    private Layout buildLibraryScreen(VerticalLayout playerLayout) {
+        return new LibraryScreen(playerLayout).build();
     }
 
     /**
@@ -182,11 +191,11 @@ public class MainView extends Panel implements View {
         return new LicenseScreen().build();
     }
 
-    public ComponentContainer buildMusic(HorizontalSplitPanel split) {
+    public ComponentContainer buildMusic(VerticalLayout playerLayout) {
         music.addStyleName(Runo.TABSHEET_SMALL);
         music.setSizeFull();
 
-        music.addTab(buildLibraryScreen(split));
+        music.addTab(buildLibraryScreen(playerLayout));
         music.addTab(buildBillingScreen());
 
         return music;
@@ -223,10 +232,19 @@ public class MainView extends Panel implements View {
      * Initial layout for {@link MainView}
      */
     private void initLayout() {
+
         VerticalLayout root = new VerticalLayout();
         root.setMargin(true);
         root.setSizeFull();
-        setContent(root);
+
+        VerticalLayout main = new VerticalLayout();
+        main.setSizeFull();
+        main.addComponent(root);
+
+        playerLayout = new VerticalLayout();
+        main.addComponent(playerLayout);
+
+        setContent(main);
 
         addTitle(root);
         addSpace(root);
