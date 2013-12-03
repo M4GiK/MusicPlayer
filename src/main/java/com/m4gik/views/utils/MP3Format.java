@@ -5,12 +5,20 @@
  */
 package com.m4gik.views.utils;
 
+import com.vaadin.ui.Audio;
+
 /**
- * TODO COMMENTS MISSING!
+ * Interface to be implemented by components wishing to initialize MP3 format.
  * 
  * @author m4gik <michal.szczygiel@wp.pl>
  * 
  */
 public interface MP3Format {
-    public MP3Format getMP3Extension();
+
+    /**
+     * Methods to be implemented, initialize proper file with proper extension.
+     * 
+     * @return Prepared file with proper extension.
+     */
+    public Audio getMP3Extension();
 }

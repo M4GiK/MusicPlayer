@@ -5,14 +5,13 @@
  */
 package com.m4gik;
 
-import org.hibernate.Session;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ru.xpoft.vaadin.security.ShiroSecurityNavigator;
 
-import com.m4gik.database.MusicPlayer;
 import com.m4gik.persistence.HibernateUtil;
+import com.m4gik.persistence.Persiste;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.ErrorHandler;
@@ -89,6 +88,11 @@ public class musicPlayerUI extends UI implements ErrorHandler {
         DefaultErrorHandler.doDefault(event);
     }
 
+    /**
+     * Initialize Vaadin session, Shiro security and Hibernate session.
+     * 
+     * @see com.vaadin.ui.UI#init(com.vaadin.server.VaadinRequest)
+     */
     @Override
     protected void init(final VaadinRequest request) {
         VaadinSession.getCurrent().setErrorHandler(this);
@@ -97,12 +101,6 @@ public class musicPlayerUI extends UI implements ErrorHandler {
         ShiroSecurityNavigator navigator = new ShiroSecurityNavigator(this,
                 this);
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
-        session.beginTransaction();
-        MusicPlayer musicplayer = new MusicPlayer();
-        musicplayer.setTitle("Jestem");
-        session.save(musicplayer);
-        session.getTransaction().commit();
+        Persiste.getInstance(HibernateUtil.getSessionFactory().openSession());
     }
 }

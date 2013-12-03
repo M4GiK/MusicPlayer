@@ -7,6 +7,7 @@ package com.m4gik.views.component;
 
 import java.util.Iterator;
 
+import com.m4gik.views.utils.AudioCollection;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.server.ExternalResource;
@@ -69,13 +70,14 @@ public class LibraryScreen implements ViewScreen {
         // size.addComponent(slider);
         // size.addComponent(new Label("+"));
         // root.addComponent(size, "top: 16px; right: 18px; z-index:1;");
+        AudioCollection audio = new AudioCollection();
 
         VerticalLayout content = new VerticalLayout();
         content.setSizeFull();
         root.addComponent(content);
 
         final GridLayout grid = new GridLayout(4, 1);
-        Panel top = new Panel("My Book Collection", grid);
+        Panel top = new Panel("Music Collection", grid);
         top.setSizeFull();
         top.addStyleName(Runo.PANEL_LIGHT);
         grid.setWidth("100%");
@@ -96,6 +98,7 @@ public class LibraryScreen implements ViewScreen {
                     Component c = it.next();
                     c.removeStyleName(Runo.CSSLAYOUT_SELECTABLE_SELECTED);
                 }
+
                 if (event.getChildComponent() != null) {
                     event.getChildComponent().addStyleName(
                             Runo.CSSLAYOUT_SELECTABLE_SELECTED);

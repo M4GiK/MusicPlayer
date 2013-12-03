@@ -13,6 +13,6 @@ package com.m4gik.views.utils;
  */
 public interface MusicFormatFactory {
 
-    public AudiFormat initialize();
+    public AudioFormat initialize();
 
 }
