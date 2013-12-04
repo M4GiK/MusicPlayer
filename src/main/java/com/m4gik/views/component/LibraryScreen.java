@@ -92,9 +92,7 @@ public class LibraryScreen implements ViewScreen {
 
             @Override
             public void layoutClick(LayoutClickEvent event) {
-                for (@SuppressWarnings("deprecation")
-                Iterator<Component> it = grid.getComponentIterator(); it
-                        .hasNext();) {
+                for (Iterator<Component> it = grid.iterator(); it.hasNext();) {
                     Component c = it.next();
                     c.removeStyleName(Runo.CSSLAYOUT_SELECTABLE_SELECTED);
                 }

@@ -5,13 +5,14 @@
  */
 package com.m4gik.views.utils;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
+import com.m4gik.database.MusicPlayer;
 import com.m4gik.persistence.Persiste;
+import com.vaadin.server.ExternalResource;
 
 /**
  * Class represents collection for audio files.
@@ -33,15 +34,50 @@ import com.m4gik.persistence.Persiste;
 public class AudioCollection {
 
     /**
-     * 
+     * List contains all audio collection.
+     */
+    private ArrayList<AudioFile> audioCollection;
+
+    /**
+     * Constructor, gets data from database using Hibernate session.
      */
     public AudioCollection() {
         Session session = Persiste.getSession();
-        SQLQuery query = session.createSQLQuery("SELECT * FROM MusicStore");
-        List musicPlayerList = query.list();
 
-        for (Iterator iter = musicPlayerList.iterator(); iter.hasNext();) {
-            System.out.println("Kilka razy");
+        List<MusicPlayer> musicPlayerList = session.createCriteria(
+                MusicPlayer.class).list();
+
+        audioCollection = new ArrayList<AudioFile>();
+        for (MusicPlayer musicPlayer : musicPlayerList) {
+            AudioFile audioFile = new AudioFile();
+            audioFile.setTitle(musicPlayer.getTitle());
+            audioFile.setAlbum(musicPlayer.getAlbum());
+            audioFile.setPictureUrl(musicPlayer.getPictureUrl());
+            audioFile.setArtist(musicPlayer.getArtist());
+            audioFile.setTrackUrl(musicPlayer.getTrackUrl());
+            audioFile.setAbout(musicPlayer.getAbout());
+            audioFile.setPrice(musicPlayer.getPrice());
+            if (!(musicPlayer.getPictureUrl() == null)) {
+                audioFile.setCover(new ExternalResource(musicPlayer
+                        .getPictureUrl()));
+            }
+
+            audioCollection.add(audioFile);
         }
+    }
+
+    /**
+     * @return the audioCollection
+     */
+    public ArrayList<AudioFile> getAudioCollection() {
+        return audioCollection;
+    }
+
+    /**
+     * @param audioCollection
+     *            the audioCollection to set
+     */
+    public void setAudioCollection(ArrayList<AudioFile> audioCollection) {
+        this.audioCollection = audioCollection;
     }
 }
