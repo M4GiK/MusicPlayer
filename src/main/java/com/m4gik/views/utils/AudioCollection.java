@@ -57,6 +57,8 @@ public class AudioCollection {
             audioFile.setTrackUrl(musicPlayer.getTrackUrl());
             audioFile.setAbout(musicPlayer.getAbout());
             audioFile.setPrice(musicPlayer.getPrice());
+            audioFile.setLyrics(musicPlayer.getLyrics());
+            audioFile.setGenre(musicPlayer.getGenre());
             if (!(musicPlayer.getPictureUrl() == null)) {
                 audioFile.setCover(new ExternalResource(musicPlayer
                         .getPictureUrl()));

@@ -36,9 +36,19 @@ public class MusicPlayer implements Serializable {
     private String artist;
 
     /**
+     * Field contains genre for track.
+     */
+    private String genre;
+
+    /**
      * The identity for track.
      */
     private Integer id;
+
+    /**
+     * Field contains lyrics for track.
+     */
+    private String lyrics;
 
     /**
      * Field contains url for picture of track.
@@ -82,10 +92,24 @@ public class MusicPlayer implements Serializable {
     }
 
     /**
+     * @return the genre
+     */
+    public String getGenre() {
+        return genre;
+    }
+
+    /**
      * @return the id
      */
     public Integer getId() {
         return id;
+    }
+
+    /**
+     * @return the lyrics
+     */
+    public String getLyrics() {
+        return lyrics;
     }
 
     /**
@@ -141,11 +165,27 @@ public class MusicPlayer implements Serializable {
     }
 
     /**
+     * @param genre
+     *            the genre to set
+     */
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    /**
      * @param id
      *            the id to set
      */
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    /**
+     * @param lyrics
+     *            the lyrics to set
+     */
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
     }
 
     /**
