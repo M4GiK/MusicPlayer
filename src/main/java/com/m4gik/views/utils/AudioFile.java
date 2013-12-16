@@ -63,6 +63,16 @@ public class AudioFile extends Audio implements AudioFormat {
     private ExternalResource cover;
 
     /**
+     * Field contains genre for track.
+     */
+    private String genre;
+
+    /**
+     * Field contains lyrics for track.
+     */
+    private String lyrics;
+
+    /**
      * Field contains url for picture of track/album.
      */
     private String pictureUrl;
@@ -119,6 +129,20 @@ public class AudioFile extends Audio implements AudioFormat {
      */
     public ExternalResource getCover() {
         return cover;
+    }
+
+    /**
+     * @return the genre
+     */
+    public String getGenre() {
+        return genre;
+    }
+
+    /**
+     * @return the lyrics
+     */
+    public String getLyrics() {
+        return lyrics;
     }
 
     /**
@@ -255,6 +279,22 @@ public class AudioFile extends Audio implements AudioFormat {
      */
     public void setCover(ExternalResource cover) {
         this.cover = cover;
+    }
+
+    /**
+     * @param genre
+     *            the genre to set
+     */
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    /**
+     * @param lyrics
+     *            the lyrics to set
+     */
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
     }
 
     /**
