@@ -8,6 +8,7 @@ package com.m4gik.views.component;
 import java.util.Iterator;
 
 import com.m4gik.views.utils.AudioCollection;
+import com.m4gik.views.utils.AudioFile;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.server.ExternalResource;
@@ -19,6 +20,7 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.NativeSelect;
@@ -35,10 +37,21 @@ import com.vaadin.ui.themes.Runo;
  */
 public class LibraryScreen implements ViewScreen {
 
+    /**
+     * 
+     */
+    private VerticalLayout content = null;
+
+    /**
+     * 
+     */
     private VerticalLayout playerLayout = null;
 
     /**
-     * @param split
+     * Constructor for {@link LibraryScreen}
+     * 
+     * @param playerLayout
+     *            The component responsible for playing music.
      */
     public LibraryScreen(VerticalLayout playerLayout) {
         setPlayerLayout(playerLayout);
@@ -70,9 +83,8 @@ public class LibraryScreen implements ViewScreen {
         // size.addComponent(slider);
         // size.addComponent(new Label("+"));
         // root.addComponent(size, "top: 16px; right: 18px; z-index:1;");
-        AudioCollection audio = new AudioCollection();
 
-        VerticalLayout content = new VerticalLayout();
+        this.content = new VerticalLayout();
         content.setSizeFull();
         root.addComponent(content);
 
@@ -95,6 +107,7 @@ public class LibraryScreen implements ViewScreen {
                 for (Iterator<Component> it = grid.iterator(); it.hasNext();) {
                     Component c = it.next();
                     c.removeStyleName(Runo.CSSLAYOUT_SELECTABLE_SELECTED);
+
                 }
 
                 if (event.getChildComponent() != null) {
@@ -104,37 +117,60 @@ public class LibraryScreen implements ViewScreen {
             }
         });
 
-        final String[] covers = new String[] { "designing-interfaces.png",
-                "comics.png", "gdtnb.png", "new-mind.png", "simplicity.png",
-                "upod.png", "designing-interactions.png", "rogue-leaders.png",
-                "tcss.png", "wfd.png", "new-type.png" };
-        ExternalResource resource = new ExternalResource(
-                "http://creativecommons.org/images/wired/cover12_11.jpg");
-        for (String cover : covers) {
+        buildAudioLibrary(grid, null);
+
+        return root;
+
+    }
+
+    /**
+     * This method builds audio library for current filter.
+     * 
+     * @param grid
+     *            The object to locate the audio covers.
+     * @param filter
+     *            The filter to extract need music files.
+     */
+    private void buildAudioLibrary(GridLayout grid, String filter) {
+        AudioCollection audio = new AudioCollection();
+
+        for (final AudioFile audioFile : audio.getAudioCollection(filter)) {
+
             CssLayout select = new CssLayout();
             select.addStyleName(Runo.CSSLAYOUT_SELECTABLE);
-            CssLayout book = new CssLayout();
-            book.addStyleName(Runo.CSSLAYOUT_SHADOW);
-            book.addComponent(new Embedded(null, resource));
-            select.addComponent(book);
+
+            CssLayout musicFile = new CssLayout();
+            musicFile.addStyleName(Runo.CSSLAYOUT_SHADOW);
+            musicFile.addComponent(createImageCover(audioFile.getCover()));
+            select.addComponent(musicFile);
+
+            musicFile.addLayoutClickListener(new LayoutClickListener() {
+
+                private static final long serialVersionUID = 5789650754220216969L;
+
+                @Override
+                public void layoutClick(LayoutClickEvent event) {
+                    buildInformationPanel(audioFile);
+                }
+            });
+
             grid.addComponent(select);
             grid.setComponentAlignment(select, Alignment.MIDDLE_CENTER);
-            if (cover.equals("gdtnb.png")) {
-                select.addStyleName(Runo.CSSLAYOUT_SELECTABLE_SELECTED);
-            }
         }
 
         Label text = new Label(
-                "Note: the book cover images are not included in the Runo theme, they are provided extenally for this example. The shadow for the books is supplied by the theme.");
+                "Note: This track are on Crative Common license.");
         text.addStyleName(Runo.LABEL_SMALL);
         text.setWidth("90%");
         grid.addComponent(text);
         grid.setComponentAlignment(text, Alignment.MIDDLE_CENTER);
 
-        text = new Label("");
-        text.addStyleName("hr");
-        content.addComponent(text);
+    }
 
+    /**
+     * @param audioFile
+     */
+    protected void buildInformationPanel(AudioFile audioFile) {
         HorizontalLayout bottom = new HorizontalLayout();
         bottom.setWidth("100%");
         content.addComponent(bottom);
@@ -186,7 +222,8 @@ public class LibraryScreen implements ViewScreen {
 
         FormLayout l = new FormLayout();
         tabs.addTab(l, "Info");
-        text = new Label("248 pages");
+        Label text = new Label("248 pages");
+
         text.setCaption("Hardcover:");
         l.addComponent(text);
         text = new Label(
@@ -211,9 +248,21 @@ public class LibraryScreen implements ViewScreen {
 
         tabs.addTab(new Label(), "Reviews");
         tabs.addTab(new Label(), "Personal");
+    }
 
-        return root;
+    /**
+     * This method creates image for cover.
+     * 
+     * @param cover
+     *            The external cover for current track.
+     * @return The image with set resource.
+     */
+    private Image createImageCover(ExternalResource cover) {
+        Image image = new Image(null, cover);
+        image.setHeight("120px");
+        image.setWidth("120px");
 
+        return image;
     }
 
     /**

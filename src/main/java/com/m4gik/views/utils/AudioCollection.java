@@ -76,6 +76,16 @@ public class AudioCollection {
     }
 
     /**
+     * @param filter
+     *            The filter to extract need music files.
+     * @return The filtered audio files.
+     */
+    public ArrayList<AudioFile> getAudioCollection(String filter) {
+        // TODO Create proper extracting method to get needs audio collection.
+        return getAudioCollection();
+    }
+
+    /**
      * @param audioCollection
      *            the audioCollection to set
      */
