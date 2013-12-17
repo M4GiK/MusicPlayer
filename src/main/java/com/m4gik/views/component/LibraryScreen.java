@@ -12,11 +12,9 @@ import com.m4gik.views.utils.AudioFile;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Embedded;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -25,6 +23,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.Slider;
+import com.vaadin.ui.Slider.ValueOutOfBoundsException;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Runo;
@@ -69,20 +69,6 @@ public class LibraryScreen implements ViewScreen {
         root.setCaption("Media Library");
         root.setHeight("200%");
         root.setWidth("100%");
-
-        // HorizontalLayout size = new HorizontalLayout();
-        // size.setSpacing(true);
-        // size.addComponent(new Label("-"));
-        // Slider slider = new Slider();
-        // try {
-        // slider.setValue(70.0);
-        // } catch (ValueOutOfBoundsException e) {
-        // // Ignore
-        // }
-        // slider.setWidth("200px");
-        // size.addComponent(slider);
-        // size.addComponent(new Label("+"));
-        // root.addComponent(size, "top: 16px; right: 18px; z-index:1;");
 
         this.content = new VerticalLayout();
         content.setSizeFull();
@@ -181,25 +167,13 @@ public class LibraryScreen implements ViewScreen {
         side.setWidth("170px");
         bottom.addComponent(side);
 
-        CssLayout book = new CssLayout();
-        book.addStyleName(Runo.CSSLAYOUT_SHADOW);
-        book.addComponent(new Embedded(null, new ThemeResource(
-                "icons/16/calendar.png")));
-        side.addComponent(book);
-        NativeSelect read = new NativeSelect("Mark the book as:");
-        read.setWidth("130px");
-        read.addItem("Not Read");
-        read.addItem("Read");
-        read.setNullSelectionAllowed(false);
-        read.select("Read");
-        side.addComponent(read);
-        read = new NativeSelect();
-        read.setWidth("130px");
-        read.addItem("Mine");
-        read.addItem("Loaned");
-        read.setNullSelectionAllowed(false);
-        read.select("Loaned");
-        side.addComponent(read);
+        CssLayout musicFile = new CssLayout();
+        musicFile.addStyleName(Runo.CSSLAYOUT_SHADOW);
+        musicFile.addComponent(createImageCover(audioFile.getCover()));
+        side.addComponent(musicFile);
+
+        side.addComponent(setFavorite());
+        side.addComponent(setRate());
 
         CssLayout details = new CssLayout();
         details.setWidth("100%");
@@ -273,11 +247,48 @@ public class LibraryScreen implements ViewScreen {
     }
 
     /**
+     * This method creates select filed to choose as a favorite or not for
+     * current track.
+     * 
+     * @return NativeSelect element with proper value.
+     */
+    private NativeSelect setFavorite() {
+        // TODO: Add this element to database.
+        NativeSelect favorite = new NativeSelect("Mark the track as:");
+        favorite.setWidth("130px");
+        favorite.addItem("Not favorite");
+        favorite.addItem("Favorite");
+        favorite.setNullSelectionAllowed(false);
+        favorite.select("Not favorite");
+
+        return favorite;
+    }
+
+    /**
      * @param playerLayout
      *            the playerLayout to set
      */
     public void setPlayerLayout(VerticalLayout playerLayout) {
         this.playerLayout = playerLayout;
+    }
+
+    /**
+     * This method set rate for current track.
+     * 
+     * @return Slider element with proper value.
+     */
+    private Slider setRate() {
+        // TODO: Add this element to database.
+        Slider slider = new Slider("Rate the track:");
+        slider.setWidth("130px");
+
+        try {
+            slider.setValue(0.0);
+        } catch (ValueOutOfBoundsException e) {
+            // Ignore
+        }
+
+        return slider;
     }
 
 }
