@@ -11,11 +11,14 @@ import com.m4gik.views.utils.AudioCollection;
 import com.m4gik.views.utils.AudioFile;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
+import com.vaadin.event.MouseEvents.ClickEvent;
+import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -40,6 +43,11 @@ public class LibraryScreen implements ViewScreen {
     /**
      * 
      */
+    private HorizontalLayout bottom = null;
+
+    /**
+     * 
+     */
     private VerticalLayout content = null;
 
     /**
@@ -55,6 +63,57 @@ public class LibraryScreen implements ViewScreen {
      */
     public LibraryScreen(VerticalLayout playerLayout) {
         setPlayerLayout(playerLayout);
+    }
+
+    /**
+     * @param audioFile
+     * @return
+     */
+    private CssLayout addDetails(AudioFile audioFile) {
+        CssLayout details = new CssLayout();
+        details.setWidth("100%");
+
+        Label title = new Label("<h3>" + audioFile.getArtist() + "&ndash;"
+                + audioFile.getTitle() + "</h3>", ContentMode.HTML);
+        details.addComponent(title);
+        title.setSizeUndefined();
+
+        TabSheet tabs = new TabSheet();
+        tabs.addStyleName(Runo.TABSHEET_SMALL);
+        tabs.setWidth("100%");
+        tabs.setHeight("180px");
+        details.addComponent(tabs);
+
+        // FormLayout l = new FormLayout();
+        // tabs.addTab(l, "Info");
+        // Label text = new Label("248 pages");
+        //
+        // text.setCaption("Hardcover:");
+        // l.addComponent(text);
+        // text = new Label(
+        // "Princeton Architectural Press; 1 edition (May 1, 2008)");
+        // text.setCaption("Publisher:");
+        // l.addComponent(text);
+        // text = new Label("English");
+        // text.setCaption("Language:");
+        // l.addComponent(text);
+        // text = new Label("1568987706");
+        // text.setCaption("ISBN-10:");
+        // l.addComponent(text);
+        // text = new Label("978-1568987705");
+        // text.setCaption("ISBN-13:");
+        // l.addComponent(text);
+        // text = new Label("9.1 x 8.1 x 1.1 inches");
+        // text.setCaption("Product Dimensions:");
+        // l.addComponent(text);
+        // text = new Label("2.2 pounds");
+        // text.setCaption("Shipping Weight:");
+        // l.addComponent(text);
+        //
+        // tabs.addTab(new Label(), "Reviews");
+        // tabs.addTab(new Label(), "Personal");
+
+        return details;
     }
 
     /**
@@ -157,71 +216,37 @@ public class LibraryScreen implements ViewScreen {
      * @param audioFile
      */
     protected void buildInformationPanel(AudioFile audioFile) {
-        HorizontalLayout bottom = new HorizontalLayout();
-        bottom.setWidth("100%");
-        content.addComponent(bottom);
+        if (bottom == null) {
+            this.bottom = new HorizontalLayout();
+            bottom.setWidth("100%");
+            content.addComponent(bottom);
 
-        VerticalLayout side = new VerticalLayout();
-        side.setMargin(true);
-        side.setSpacing(true);
-        side.setWidth("170px");
-        bottom.addComponent(side);
+            VerticalLayout side = new VerticalLayout();
+            side.setMargin(true);
+            side.setSpacing(true);
+            side.setWidth("170px");
+            bottom.addComponent(side);
 
-        CssLayout musicFile = new CssLayout();
-        musicFile.addStyleName(Runo.CSSLAYOUT_SHADOW);
-        musicFile.addComponent(createImageCover(audioFile.getCover()));
-        side.addComponent(musicFile);
+            CssLayout musicFile = new CssLayout();
+            musicFile.addStyleName(Runo.CSSLAYOUT_SHADOW);
+            musicFile.addComponent(createPlayImage(audioFile,
+                    audioFile.getCover()));
+            side.addComponent(musicFile);
 
-        side.addComponent(setFavorite());
-        side.addComponent(setRate());
+            side.addComponent(setFavorite());
+            side.addComponent(setRate());
 
-        CssLayout details = new CssLayout();
-        details.setWidth("100%");
-        // details.setMargin(false, true, false, false);
-        bottom.addComponent(details);
-        bottom.setExpandRatio(details, 1);
+            Component details = addDetails(audioFile);
+            bottom.addComponent(details);
+            bottom.setExpandRatio(details, 1);
 
-        @SuppressWarnings("deprecation")
-        Label title = new Label(
-                "<h3>Graphic Design &ndash; The New Basics</h3>",
-                Label.CONTENT_XHTML);
-        details.addComponent(title);
-        title.setSizeUndefined();
+        } else {
+            bottom.removeAllComponents();
+            content.removeComponent(bottom);
+            this.bottom = null;
+            buildInformationPanel(audioFile);
+        }
 
-        TabSheet tabs = new TabSheet();
-        tabs.addStyleName(Runo.TABSHEET_SMALL);
-        tabs.setWidth("100%");
-        tabs.setHeight("180px");
-        details.addComponent(tabs);
-
-        FormLayout l = new FormLayout();
-        tabs.addTab(l, "Info");
-        Label text = new Label("248 pages");
-
-        text.setCaption("Hardcover:");
-        l.addComponent(text);
-        text = new Label(
-                "Princeton Architectural Press; 1 edition (May 1, 2008)");
-        text.setCaption("Publisher:");
-        l.addComponent(text);
-        text = new Label("English");
-        text.setCaption("Language:");
-        l.addComponent(text);
-        text = new Label("1568987706");
-        text.setCaption("ISBN-10:");
-        l.addComponent(text);
-        text = new Label("978-1568987705");
-        text.setCaption("ISBN-13:");
-        l.addComponent(text);
-        text = new Label("9.1 x 8.1 x 1.1 inches");
-        text.setCaption("Product Dimensions:");
-        l.addComponent(text);
-        text = new Label("2.2 pounds");
-        text.setCaption("Shipping Weight:");
-        l.addComponent(text);
-
-        tabs.addTab(new Label(), "Reviews");
-        tabs.addTab(new Label(), "Personal");
     }
 
     /**
@@ -237,6 +262,36 @@ public class LibraryScreen implements ViewScreen {
         image.setWidth("120px");
 
         return image;
+    }
+
+    /**
+     * @param audioFile
+     * @param cover
+     * @return
+     */
+    private Component createPlayImage(final AudioFile audioFile,
+            ExternalResource cover) {
+
+        AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+        absoluteLayout.setWidth("120px");
+        absoluteLayout.setHeight("120px");
+        absoluteLayout.addComponent(createImageCover(cover));
+
+        Image play = createImageCover(new ExternalResource(
+                "http://www.gelab.com.tr/interfaces/gelab/images/PlayButton.png"));
+        play.setWidth("50px");
+        play.setHeight("50px");
+        play.addClickListener(new ClickListener() {
+
+            private static final long serialVersionUID = -5184601350921707969L;
+
+            @Override
+            public void click(ClickEvent event) {
+                System.out.println(audioFile.getTitle());
+            }
+        });
+        absoluteLayout.addComponent(play, "top: 30px; left: 30px;");
+        return absoluteLayout;
     }
 
     /**
