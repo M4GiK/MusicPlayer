@@ -287,10 +287,12 @@ public class LibraryScreen implements ViewScreen {
 
             @Override
             public void click(ClickEvent event) {
-                System.out.println(audioFile.getTitle());
+                MusicPlayerPanel.getInstance(getPlayerLayout());
+                MusicPlayerPanel.runDefaultSetup();
             }
         });
         absoluteLayout.addComponent(play, "top: 30px; left: 30px;");
+
         return absoluteLayout;
     }
 

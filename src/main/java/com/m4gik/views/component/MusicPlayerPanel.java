@@ -44,6 +44,15 @@ public class MusicPlayerPanel {
     }
 
     /**
+     * This method run default settings for music player.
+     */
+    public static void runDefaultSetup() {
+        if (instance != null) {
+            MusicPlayerPanel.playerLayout.setHeight("200px");
+        }
+    }
+
+    /**
      * Private constructor to avoid the automatic creation of a default public
      * constructor.
      */
