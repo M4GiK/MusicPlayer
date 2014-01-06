@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import com.m4gik.views.utils.AudioCollection;
 import com.m4gik.views.utils.AudioFile;
+import com.m4gik.views.utils.ObservedObject;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.MouseEvents.ClickEvent;
@@ -33,27 +34,22 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Runo;
 
 /**
- * TODO COMMENTS MISSING!
+ * Class responsible for displaying view for library of music.
  * 
  * @author m4gik <michal.szczygiel@wp.pl>
  * 
  */
 public class LibraryScreen implements ViewScreen {
 
-    /**
-     * 
-     */
     private HorizontalLayout bottom = null;
 
-    /**
-     * 
-     */
     private VerticalLayout content = null;
 
-    /**
-     * 
-     */
+    private Boolean isPlay = false;
+
     private VerticalLayout playerLayout = null;
+
+    private ObservedObject watched = new ObservedObject(isPlay);
 
     /**
      * Constructor for {@link LibraryScreen}
@@ -117,7 +113,8 @@ public class LibraryScreen implements ViewScreen {
     }
 
     /**
-     * TODO Comments missing. This method overrides an existing method.
+     * This method builds library screen. This method overrides an existing
+     * method.
      * 
      * @see com.m4gik.views.component.ViewScreen#build()
      */
@@ -277,7 +274,7 @@ public class LibraryScreen implements ViewScreen {
         absoluteLayout.setHeight("120px");
         absoluteLayout.addComponent(createImageCover(cover));
 
-        Image play = createImageCover(new ExternalResource(
+        final Image play = createImageCover(new ExternalResource(
                 "http://www.gelab.com.tr/interfaces/gelab/images/PlayButton.png"));
         play.setWidth("50px");
         play.setHeight("50px");
@@ -287,10 +284,27 @@ public class LibraryScreen implements ViewScreen {
 
             @Override
             public void click(ClickEvent event) {
-                MusicPlayerPanel.getInstance(getPlayerLayout());
+                MusicPlayerPanel musicPanel = MusicPlayerPanel
+                        .getInstance(getPlayerLayout());
+
+                watched.addObserver(musicPanel);
+
+                MusicPlayerPanel.setAudio(audioFile);
                 MusicPlayerPanel.runDefaultSetup();
+
+                if (isPlay.equals(false)) {
+                    watched.setValue(isPlay = true);
+                    play.setSource(new ExternalResource(
+                            "http://icons.iconarchive.com/icons/icons-land/play-stop-pause/256/Pause-Disabled-icon.png"));
+                } else {
+                    watched.setValue(isPlay = false);
+                    play.setSource(new ExternalResource(
+                            "http://www.gelab.com.tr/interfaces/gelab/images/PlayButton.png"));
+                }
+
             }
         });
+
         absoluteLayout.addComponent(play, "top: 30px; left: 30px;");
 
         return absoluteLayout;
