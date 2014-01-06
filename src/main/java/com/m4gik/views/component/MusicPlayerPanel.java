@@ -44,12 +44,29 @@ public class MusicPlayerPanel {
     }
 
     /**
+     * This method checks if {@link MusicPlayerPanel} is already running.
+     * 
+     * @return true if is running, or false if is not
+     */
+    public static Boolean isRunning() {
+        return instance != null ? true : false;
+    }
+
+    /**
      * This method run default settings for music player.
      */
     public static void runDefaultSetup() {
         if (instance != null) {
             MusicPlayerPanel.playerLayout.setHeight("200px");
         }
+    }
+
+    /**
+     * @param playerLayout
+     *            the playerLayout to set
+     */
+    public static void setPlayerLayout(VerticalLayout playerLayout) {
+        MusicPlayerPanel.playerLayout = playerLayout;
     }
 
     /**
@@ -65,14 +82,6 @@ public class MusicPlayerPanel {
      */
     public MusicPlayerPanel(VerticalLayout playerLayout) {
         setPlayerLayout(playerLayout);
-    }
-
-    /**
-     * @param playerLayout
-     *            the playerLayout to set
-     */
-    public void setPlayerLayout(VerticalLayout playerLayout) {
-        MusicPlayerPanel.playerLayout = playerLayout;
     }
 
 }

@@ -13,6 +13,7 @@ import com.m4gik.views.component.BillingScreen;
 import com.m4gik.views.component.CategoryTree;
 import com.m4gik.views.component.LibraryScreen;
 import com.m4gik.views.component.LicenseScreen;
+import com.m4gik.views.component.MusicPlayerPanel;
 import com.m4gik.views.component.WelcomeScreen;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -243,6 +244,11 @@ public class MainView extends Panel implements View {
 
         playerLayout = new VerticalLayout();
         main.addComponent(playerLayout);
+
+        if (MusicPlayerPanel.isRunning()) {
+            MusicPlayerPanel.setPlayerLayout(playerLayout);
+            MusicPlayerPanel.runDefaultSetup();
+        }
 
         setContent(main);
 
