@@ -106,7 +106,7 @@ public class LibraryScreen implements ViewScreen {
 
         formLayout = new FormLayout();
         tabs.addTab(formLayout, "Decription");
-        text = new Label(audioFile.getDescription());
+        text = new Label(audioFile.getAbout());
         formLayout.addComponent(text);
 
         formLayout = new FormLayout();
