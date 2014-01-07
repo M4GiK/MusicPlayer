@@ -29,5 +29,15 @@
         <property name="about" type="string">
             <column name="About" not-null="false" unique="false" />
         </property>
+        <property name="genre" type="string">
+            <column name="Genre" not-null="false" unique="false" />
+        </property>
+        <property name="description" type="string">
+            <column name="Description" not-null="false" unique="false" />
+        </property>
+        <property name="lyrics" type="string">
+            <column name="Lyrics" not-null="false" unique="false" />
+        </property>
+        
     </class>
 </hibernate-mapping>

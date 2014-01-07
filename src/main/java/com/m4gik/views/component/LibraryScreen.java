@@ -20,6 +20,7 @@ import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -80,34 +81,38 @@ public class LibraryScreen implements ViewScreen {
         tabs.setHeight("180px");
         details.addComponent(tabs);
 
-        // FormLayout l = new FormLayout();
-        // tabs.addTab(l, "Info");
-        // Label text = new Label("248 pages");
-        //
-        // text.setCaption("Hardcover:");
-        // l.addComponent(text);
-        // text = new Label(
-        // "Princeton Architectural Press; 1 edition (May 1, 2008)");
-        // text.setCaption("Publisher:");
-        // l.addComponent(text);
-        // text = new Label("English");
-        // text.setCaption("Language:");
-        // l.addComponent(text);
-        // text = new Label("1568987706");
-        // text.setCaption("ISBN-10:");
-        // l.addComponent(text);
-        // text = new Label("978-1568987705");
-        // text.setCaption("ISBN-13:");
-        // l.addComponent(text);
-        // text = new Label("9.1 x 8.1 x 1.1 inches");
-        // text.setCaption("Product Dimensions:");
-        // l.addComponent(text);
-        // text = new Label("2.2 pounds");
-        // text.setCaption("Shipping Weight:");
-        // l.addComponent(text);
-        //
-        // tabs.addTab(new Label(), "Reviews");
-        // tabs.addTab(new Label(), "Personal");
+        FormLayout formLayout = new FormLayout();
+        tabs.addTab(formLayout, "Info");
+
+        Label text = new Label(audioFile.getTitle());
+        text.setCaption("Title:");
+        formLayout.addComponent(text);
+
+        text = new Label(audioFile.getArtist());
+        text.setCaption("Artist:");
+        formLayout.addComponent(text);
+
+        text = new Label(audioFile.getAlbum());
+        text.setCaption("Album:");
+        formLayout.addComponent(text);
+
+        text = new Label(audioFile.getGenre());
+        text.setCaption("Genre:");
+        formLayout.addComponent(text);
+
+        text = new Label(audioFile.getPrice() + "$");
+        text.setCaption("Price");
+        formLayout.addComponent(text);
+
+        formLayout = new FormLayout();
+        tabs.addTab(formLayout, "Decription");
+        text = new Label(audioFile.getDescription());
+        formLayout.addComponent(text);
+
+        formLayout = new FormLayout();
+        tabs.addTab(formLayout, "Lyrics");
+        text = new Label(audioFile.getLyrics());
+        formLayout.addComponent(text);
 
         return details;
     }
