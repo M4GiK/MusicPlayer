@@ -74,7 +74,12 @@ public class MusicPlayerPanel implements Observer {
         title.addStyleName(Runo.LABEL_H1);
         title.setSizeFull();
 
+        Label artist = new Label(audioFile.getArtist());
+        artist.addStyleName(Runo.LABEL_H2);
+        artist.setSizeFull();
+
         vertLayout.addComponent(title);
+        vertLayout.addComponent(artist);
         vertLayout.addComponent(audio);
 
         // layout.addComponent(createPlayButton(audio));
